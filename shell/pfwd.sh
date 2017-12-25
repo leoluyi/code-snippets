@@ -5,7 +5,7 @@
 
 for i in ${@:2}
 do
-  echo Forwarding port $i
   ssh -N -L $i:localhost:$i $1 &
+  echo "Forwarding port $i (pid: $!)"
 done
 
