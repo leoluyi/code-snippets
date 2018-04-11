@@ -2,7 +2,7 @@
 
 # Convert encoding of text files to UTF-8
 #
-# Requrements:
+# Requirements:
 # $ pip install chardet
 #
 # Reference:
