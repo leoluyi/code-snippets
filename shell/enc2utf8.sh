@@ -1,5 +1,8 @@
 #!/user/bin/bash
 
+# Reference:
+# https://gist.github.com/leoluyi/85b45a3a750fb6f1d8cab0ea8203320d
+
 if [ $# -lt 1]; then
   echo "Usage "$0" <file_name>"
   echo "Convert text files  to UTF-8"
