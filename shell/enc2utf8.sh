@@ -1,5 +1,10 @@
 #!/user/bin/bash
 
+# Convert encoding of text files to UTF-8
+#
+# Requrements:
+# $ pip install chardet
+#
 # Reference:
 # https://gist.github.com/leoluyi/85b45a3a750fb6f1d8cab0ea8203320d
 
