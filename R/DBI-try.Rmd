@@ -1,0 +1,104 @@
+---
+title: "DBI-try"
+output: 
+  html_document: 
+    highlight: kate
+    theme: flatly
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r}
+library(DBI)
+library(RSQLite)
+```
+
+## Create and write tables
+
+```{r}
+# Create an ephemeral in-memory RSQLite database
+con <- dbConnect(RSQLite::SQLite(), dbname = ":memory:")
+
+dbListTables(con)
+dbWriteTable(con, "mtcars", mtcars)
+dbListTables(con)
+```
+
+## Querying
+
+`dbGetQuery()` will submit a query and fetch the results. It is also possible to submit the query and fetch separately with `dbSendQuery()` and `dbFetch()`.
+
+```{r}
+# You can fetch all results:
+res <- dbSendQuery(con, "SELECT * FROM mtcars WHERE cyl = 4")
+dbFetch(res)
+dbClearResult(res)
+```
+
+```{r}
+# Or a chunk at a time
+res <- dbSendQuery(con, "SELECT * FROM mtcars WHERE cyl = 4")
+while (!dbHasCompleted(res)) {
+  chunk <- dbFetch(res, n = 5)
+  print(nrow(chunk))
+}
+dbClearResult(res)
+```
+
+It is good practice to register a call to `dbClearResult()` via `on.exit()` right after calling dbSendQuery() or dbSendStatement() .
+Release the resource
+
+```{r}
+dbDisconnect(con)
+```
+
+
+## Bind values to a parameterized/prepared statement
+
+```{r}
+con <- dbConnect(RSQLite::SQLite(), ":memory:")
+
+dbWriteTable(con, "iris", iris)
+
+# Using the same query for different values
+iris_result <- dbSendQuery(con, "SELECT * FROM iris WHERE [Petal.Width] > ?")
+iris_result # status before bind
+
+dbBind(iris_result, list(2.3))
+iris_result # status after bind
+dbFetch(iris_result, n = 2)
+dbHasCompleted(iris_result)
+dbFetch(iris_result, n = -1)
+dbHasCompleted(iris_result)
+iris_result # status after fetch
+
+# Bind with another parameter
+dbBind(iris_result, list(3))
+dbFetch(iris_result)
+
+# Release resource
+dbClearResult(iris_result)
+iris_result
+
+# Executing the same statement with different values at once
+iris_result <- dbSendStatement(con, "DELETE FROM iris WHERE [Species] = $species")
+dbBind(iris_result, list(species = c("setosa", "versicolor", "unknown")))
+dbGetRowsAffected(iris_result)
+
+dbClearResult(iris_result)
+
+nrow(dbReadTable(con, "iris"))
+
+
+dbDisconnect(con)
+```
+
