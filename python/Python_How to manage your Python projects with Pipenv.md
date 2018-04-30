@@ -1,10 +1,11 @@
 # [Python] How to manage your Python projects with Pipenv
 
-- https://www.youtube.com/watch?v=tRmmjlVHzno&t=301s
+- https://github.com/pypa/pipenv
+- http://pipenv-ja.readthedocs.io/ja/latest/index.html
 - https://robots.thoughtbot.com/how-to-manage-your-python-projects-with-pipenv
 - https://medium.com/@jllorencetti/my-somewhat-pragmatic-approach-towards-pipenv-62bd5396ffdd
 - https://medium.com/@dboyliao/python-相依管理-f7d89dfe917b
-- https://github.com/pypa/pipenv
+- https://www.youtube.com/watch?v=tRmmjlVHzno&t=301s
 
 ### Get Started
 
@@ -14,12 +15,14 @@ Install Pipenv
 $ pip install pipenv
 ```
 
-Then change directory to the folder containing your Python project and initiate Pipenv, This will create two new files, `Pipfile` and `Pipfile.lock`, in your project directory, and a new virtual environment for your project if it doesn’t exist already.
+Then change directory to the folder containing your Python project and initiate Pipenv, 
 
 ```
 $ cd my_project
 $ pipenv install
 ```
+
+This will create two new files, `Pipfile` and `Pipfile.lock`, in your project directory, and a new virtual environment for your project if it doesn’t exist already.
 
 To install a Python package for your project use the install keyword. For example,
 
@@ -110,3 +113,22 @@ Locate the Python interpreter:
 $ pipenv --py
 /Users/kennethreitz/.local/share/virtualenvs/test-Skyy4vre/bin/python
 ```
+
+
+### Python integration
+
+If you have `pyenv` installed, `pipenv` integrates with it and can install the required version described in the `Pipfile`
+
+https://github.com/pypa/pipenv/issues/1549
+
+Pyenv global:
+
+- `Anaconda`: pipenv does not work for anaconda virtualenv
+- Use `3.6.5` instead
+
+
+### Pipfile and Pipfile.lock, our “requirements.txt 2.0”.
+
+- `Pipfile`: is where you declare the required Python version, the packages used in your production and development environment and their source, e.g. PyPI, PackageCloud, etc.
+- `Pipfile.lock`: where all of all packages versions are pinned, along with a bunch of other information, like the hashes of each package.
+
