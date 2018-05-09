@@ -15,6 +15,13 @@ Install Pipenv
 $ pip install pipenv
 ```
 
+> For MacOS, use `.bashrc` to let `pipenv shell` use your custom bash settings
+> in a nonlogin interactive shell:
+> 
+> ```
+> $ cp ${HOME}/.bash_profile ${HOME}/.bashrc
+> ```
+
 Then change directory to the folder containing your Python project and initiate Pipenv, 
 
 ```
