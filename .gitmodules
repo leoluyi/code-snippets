@@ -1,0 +1,3 @@
+[submodule "R/shiny/markets_shiny"]
+	path = R/shiny/markets_shiny
+	url = git@github.com:leoluyi/markets_shiny.git
