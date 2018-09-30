@@ -6,11 +6,11 @@
 
 ## TL;DR
 
-1. 將字體放到 matplotlib 的字體套件資料夾
+1. 安裝 otf 中文字體
 
-找到中文的字體檔 (ttf/otf)，選擇一個順眼的字體丟到 `site-packages/matplotlib/mpl-data/fonts/ttf`
+安裝中文字體檔 (ttf/otf)，或將字體檔丟到 matplotlib 的安裝位置 `site-packages/matplotlib/mpl-data/fonts/ttf`，這裡建議直接安裝 __Google Noto Fonts__
 
-> Mac 中的字體格式是 ttc，而 matplotlib 格式是 ttf，不能直接指定 mac 字體，需要下載 ttf 類中文字體，再安裝到 Mac 上，但不用另外將字體放到套件資料夾。
+> macOS 中的字體格式是 ttc，而 matplotlib 格式是 ttf，不能直接指定 macOS 字體，需要下載 ttf 類中文字體，再安裝到 macOS 上，但不用另外將字體放到套件資料夾。
 
 ```py
 # 找出 matplotlib 的安裝位置
@@ -38,7 +38,7 @@ _rebuild()
 }
 ```
 
-4. Set font family
+3. Set font family
 
 ```py
 import matplotlib.pyplot as plt
@@ -57,16 +57,20 @@ plt.title('獲救情況 (1為獲救)') # 標題
 plt.show()
 ```
 
-5. (Optional) 直接在 `matplotlibrc` 修改就不用另外指定 `plt.rcParams`
+4. (Optional) 直接在 `matplotlibrc` 修改就不用另外指定 `plt.rcParams`
 
 修改 `~/.matplotlib/matplotlibrc` 加入下面幾行
 
+- Linux: `~/.config/matplotlib/matplotlibrc`
+- Mac/Windows: `~/.matplotlib/matplotlibrc`
+
 ```
+# ~/.matplotlib/matplotlibrc
 font.family         : sans-serif
 font.sans-serif     : jf-jinxuan-fresh, Noto Sans CJK TC, Bitstream Vera Sans, Lucida Grande,Verdana, Geneva, Lucid, Arial, Helvetica, Avant Garde, sans-serif
 ```
 
-(也可以但不建議修改 matplotlib 安裝路徑中的 `site-packages/matplotlib/mpl-data/matplotlibrc` 文件)，找到如下兩項，去掉前面的 `#`，並在 `font.sans-serif` 冒號後面加上 `Noto Sans CJK TC`，保存退出。(解決負號 '-' 顯示為方塊的問題：找到 `axes.unicode_minus`，將 `True` 改為 `False`)
+> 也可以（但不建議）修改 matplotlib 安裝路徑中的 `site-packages/matplotlib/mpl-data/matplotlibrc` 文件，因為重新安裝後設定便會消失)，找到如下兩項，去掉前面的 `#`，並在 `font.sans-serif` 冒號後面加上 `Noto Sans CJK TC`，保存退出。(解決負號 '-' 顯示為方塊的問題：找到 `axes.unicode_minus`，將 `True` 改為 `False`
 
 ## Method 2: 直接指定字體檔案
 
