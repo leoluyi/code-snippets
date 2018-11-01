@@ -35,7 +35,7 @@ https://realpython.com/python-matplotlib-guide/
 
 - `plt.stacklot()` = `gca().stacklot()`
 - `plt.title()` = `gca().set_title()`
-- ``plt.ylabels()` = `gca().set_ylable()`
+- `plt.ylabels()` = `gca().set_ylable()`
 
 ```py
 # matplotlib/pyplot.py
@@ -63,8 +63,8 @@ ax1, ax2, ax3, ax4 = ax.flatten()  # flatten a 2d NumPy array to 1d
 ## The "Figures" Behind The Scenes
 
 - Each time you call `plt.subplots()` or the less frequently used `plt.figure()` (which creates a Figure, with no Axes), you are creating a new `Figure` object that matplotlib sneakily keeps around in memory.
-- `plt.get_fignums()` returns fig corresponding ID number, then `plt.figure(num)`
-- `plt.close(num)` closes the figure number `num`, and `plt.close('all')` closes all the figure windows
+- `plt.get_fignums()` returns fig corresponding ID number, then `plt.figure(num)` returns `Figure` object.
+- `plt.close(num)` closes the figure number `num`, and `plt.close('all')` closes all the figure windows.
 
 ```py
 >>> fig1, ax1 = plt.subplots()
