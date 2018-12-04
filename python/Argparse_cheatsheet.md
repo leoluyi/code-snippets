@@ -44,7 +44,7 @@
 
     - `dest`        : str       = `[inferred]`
     - `required`    : bool      = `[False]`
-    - `metavar`     : str       = `[inferred from name: "--foo-bar" -> "foo_bar"]`
+    - `metavar`     : str       = `[inferred from name: "--foo-bar" -> "foo_bar"]` A name for the argument in usage messages.
     - `help`        : str       = `[None]`
         - `Specifiers`: `%(prog)s`, and the keyword args here: 
         - eg: `%(default)s`, `%(metavar)s`, `%(type.__name__)s`
@@ -141,3 +141,14 @@ syslog.setLevel(args.loggingLevel)
 sqla_url = config.get('main', 'sqlalchemy_url')
 ```
 
+## Misc
+
+#### Convert argparse.Namespace() as a dictionary?
+
+```
+>>> parser = argparse.ArgumentParser()
+>>> parser.add_argument('--foo')
+>>> args = parser.parse_args(['--foo', 'BAR'])
+>>> vars(args)   # Return the __dict__ attribute
+{'foo': 'BAR'}
+```
