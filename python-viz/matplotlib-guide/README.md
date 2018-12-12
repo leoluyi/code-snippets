@@ -1,6 +1,7 @@
 # Python Plotting With Matplotlib (Guide)
 
-https://realpython.com/python-matplotlib-guide/
+- https://realpython.com/python-matplotlib-guide/
+- https://matplotlib.org/users/artists.html
 
 ## History of matplotlib
 
@@ -74,6 +75,9 @@ ax1, ax2, ax3, ax4 = ax.flatten()  # flatten a 2d NumPy array to 1d
 
 >>> id(plt.gcf())  # `fig1` is the current figure.
 4525567840
+
+>>> fig1.get_axes()  # `ax1` in axes array
+[<matplotlib.axes._subplots.AxesSubplot at 0x7f250d4561d0>]
 
 >>> fig2, ax2 = plt.subplots()
 >>> id(fig2) == id(plt.gcf())  # The current figure has changed to `fig2`.
