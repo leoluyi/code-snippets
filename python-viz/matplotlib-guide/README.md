@@ -11,7 +11,7 @@ https://realpython.com/python-matplotlib-guide/
 
 ## The Matplotlib Object Hierarchy
 
-![fig_map](img/fig_map.webp)
+![fig_map](img/fig_map.png)
 
 - `Figure`: the outermost container for a matplotlib graphic, which can contain multiple `Axes` objects.
 - `Axes`: (actual plots) actually translates into what we think of as an individual plot or graph (rather than the plural of "axis," as we might expect).
