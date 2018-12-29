@@ -1,6 +1,6 @@
 # asyncio - Common Mistakes Using asyncio
 
-- https://xinhuang.github.io/posts/2017-07-31-common-mistakes-using-python3-asyncio.html
+- [Common Mistakes Using Python3 asyncio](https://xinhuang.github.io/posts/2017-07-31-common-mistakes-using-python3-asyncio.html)
 - [YouTube - Python tricks: Demystifying async, await, and asyncio](https://www.youtube.com/watch?v=tSLDcRkgTsY)
 - [Python tricks: Demystifying async, await, and asyncio](https://osf.io/w8u26/)
 - [Morvan - 加速爬蟲: 異步加載 Asyncio](https://morvanzhou.github.io/tutorials/data-manipulation/scraping/4-02-asyncio/)
@@ -71,7 +71,7 @@ finally:
     loop.close()
 ```
 
-### RuntimeWarning: coroutine foo was never awaited?
+### Mistake 1 - RuntimeWarning: coroutine foo was never awaited?
 
 This runtime warning can happen in many scenarios, but the cause are same: A coroutine object is created by the invocation of an async function, but is never inserted into an EventLoop.
 
@@ -102,7 +102,7 @@ remaining_work_not_depends_on_foo()
 loop.run_until_complete(task)
 ```
 
-### Task was destroyed but it is pending!
+### Mistake 2 - Task was destroyed but it is pending!
 
 The cause of this problem is that the `EventLoop` is closed right after canceling pending tasks. Because the [`Task.cancel()`](https://docs.python.org/3/library/asyncio-task.html#asyncio.Task.cancel) "arranges for a `CancelledError` to be thrown into the wrapped coroutine on the next cycle through the event loop", and "_the coroutine then has a chance to clean up or even deny the request using try/except/finally._"
 
@@ -110,7 +110,7 @@ To correctly cancel all tasks and close `EventLoop`, the `EventLoop` should be g
 
 For example, this is the code to cancel all the tasks:
 
-```
+```py
 def cancel_tasks():
     tasks = Task.all_tasks()              # get all task in current loop
     for t in tasks:
@@ -122,7 +122,7 @@ loop.stop()
 
 Below code correctly handle task canceling and clean up. It starts the `EventLoop` by calling `loop.run_forever()`, and cleans up tasks after receiving `loop.stop()`:
 
-```
+```py
 try:
     loop.run_forever()                # run_forever() returns after calling loop.stop()
     tasks = Task.all_tasks()
@@ -132,13 +132,13 @@ finally:
     loop.close()
 ```
 
-### `Task`/`Future` is awaited in a different `EventLoop` than it is created
+### Mistake 3 - `Task`/`Future` is awaited in a different `EventLoop` than it is created
 
 This error is especially surprising to people who are familiar with C# `async`/`await`. It is because most of `asyncio` is not thread-safe, nor is `asyncio.Future` or `asyncio.Task`. Also don't confuse `asyncio.Future` with `concurrent.futures.Future` because they are not compatible (at least until Python 3.6): the latter is thread-safe while the former is not.
 
 In order to await an `asyncio.Future` in a different thread, `asyncio.Future` can be wrapped in a `concurrent.Future`:
 
-```
+```py
 def wrap_future(asyncio_future):
     def done_callback(af, cf):
         try:
