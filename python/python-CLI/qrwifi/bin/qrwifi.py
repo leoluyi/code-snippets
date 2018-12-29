@@ -1,9 +1,6 @@
 import os
 import sys
 
-os.environ['LC_ALL'] = 'en_US.utf-8'
-os.environ['LANG'] = 'en_US.utf-8'
-
 is_local = os.path.split(os.getcwd())[-1] == 'bin'
 if is_local:
     print(f'(Local execution {__file__})')
