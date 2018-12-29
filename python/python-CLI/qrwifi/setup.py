@@ -11,6 +11,6 @@ setup(
     package_data={},
     install_requires=['pyqrcode', 'numpy', 'click'],
     entry_points={
-        'console_scripts': ['qrwifi = qrwifi.cli:start']
+        'console_scripts': ['qrwifi = qrwifi.cli:qrwifi']
     }
 )
