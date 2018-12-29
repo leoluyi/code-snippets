@@ -1,4 +1,4 @@
-# Write a good README file for GitHub project
+# Write a good README file for GitHub project <img src="img/avatar.png" align="right" width=125px />
 
 https://dbader.org/blog/write-a-great-readme-for-your-github-project
 
