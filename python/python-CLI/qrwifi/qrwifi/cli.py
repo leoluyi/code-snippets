@@ -1,7 +1,5 @@
-import numpy as np
-import pyqrcode as pq
 import click
-from .functions import wifi_qr, qr2array
+from qrwifi.functions import wifi_qr
 
 
 @click.group()
@@ -10,7 +8,10 @@ from .functions import wifi_qr, qr2array
 @click.option("--password", help="WiFi password.")
 @click.pass_context
 def main(ctx, ssid: str, security: str = "", password: str = ""):
+
     qr = wifi_qr(ssid=ssid, security=security, password=password)
+
+    ctx.ensure_object(dict)
     ctx.obj["qr"] = qr
     ctx.obj["ssid"] = ssid
     ctx.obj["security"] = security
@@ -30,9 +31,9 @@ def png(ctx, filename, scale: int = 10):
     ctx.obj["qr"].png(filename, scale)
 
 
-def start():
-    main(obj={})
+def qrwifi(*args, **kwargs):
+    main(*args, **kwargs)
 
 
 if __name__ == "__main__":
-    start()
+    qrwifi()

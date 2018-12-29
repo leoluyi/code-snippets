@@ -81,6 +81,16 @@ parser.set_defaults(arg=value)
 args = parser.parse_args()
 ```
 
+#### What are the entry args taken?
+
+`parser.parse_args(args=None, namespace=None)`
+
+When `args` is `None`, the default is taken from `sys.argv[1:]`.
+
+```
+parser.parse_args(['--sum', '7', '-1', '42'])
+```
+
 ## argparse-example-1
 
 A typical example of Python's argparse combined with configparser. 
