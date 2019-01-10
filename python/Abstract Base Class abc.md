@@ -12,6 +12,7 @@
 ```py
 from abc import ABCMeta, abstractmethod
 
+
 class AbstractFoo(metaclass=ABCMeta):
 
     # Reruired attr or property
@@ -20,9 +21,11 @@ class AbstractFoo(metaclass=ABCMeta):
     def required_attr(self):
         pass
 
+    # Required method
     @abstractmethod
     def bar(self):
         pass
+
 
 class Foo(AbstractFoo):
 
@@ -30,15 +33,17 @@ class Foo(AbstractFoo):
 
     def __init__(self, value=None):
         if value:
-            '''replace default when value provided'''
+            '''replace default required_attr when value provided'''
             self.required_attr = value
 
     def bar():
         pass
 
+
 class FooNobar(AbstractFoo):
     # We forget to declare bar()
     pass
+
 
 def main():
     foo = Foo()

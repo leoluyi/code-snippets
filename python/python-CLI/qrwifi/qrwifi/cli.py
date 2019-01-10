@@ -8,10 +8,13 @@ from qrwifi.functions import wifi_qr
 @click.option("--password", help="WiFi password.")
 @click.pass_context
 def main(ctx, ssid: str, security: str = "", password: str = ""):
+    # ensure that ctx.obj exists and is a dict (in case `cli()` is called
+    # by means other than the `qrwifi()` function below)
+    # http://click.palletsprojects.com/en/7.x/commands/#nested-handling-and-contexts
+    ctx.ensure_object(dict)
 
     qr = wifi_qr(ssid=ssid, security=security, password=password)
 
-    ctx.ensure_object(dict)
     ctx.obj["qr"] = qr
     ctx.obj["ssid"] = ssid
     ctx.obj["security"] = security
@@ -31,9 +34,9 @@ def png(ctx, filename, scale: int = 10):
     ctx.obj["qr"].png(filename, scale)
 
 
-def qrwifi(*args, **kwargs):
-    main(*args, **kwargs)
+def cli(*args, **kwargs):
+    main(obj=dict(), *args, **kwargs)
 
 
 if __name__ == "__main__":
-    qrwifi()
+    cli()
