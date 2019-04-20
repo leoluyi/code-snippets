@@ -44,7 +44,7 @@ def current_weather(location, api_key=SAMPLE_API_KEY):
 @click.option(
     '--config-file', '-c',
     type=click.Path(),
-    default='~/.weather.cfg',
+    default='./.weather.cfg',
 )
 @click.pass_context
 def main(ctx, api_key, config_file):
