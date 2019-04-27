@@ -81,7 +81,7 @@ def current(ctx, location):
     api_key = ctx.obj['api_key']
 
     weather = current_weather(location, api_key)
-    print(f"The weather in {location} right now: {weather}.")
+    print(f"The weather in {location} right now: <{weather[0]}> | Temp: {weather[1]} ({weather[2]}~{weather[3]}).")
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-# pipenv run python weather.py config
-pipenv run python weather.py current Taipei
+# pipenv run python cli.py config
+pipenv run python cli.py current Taipei
