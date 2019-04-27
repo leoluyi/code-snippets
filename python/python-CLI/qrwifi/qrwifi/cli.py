@@ -4,7 +4,7 @@ from qrwifi.functions import wifi_qr
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
 
-@click.group(name='qrwifi', context_settings=CONTEXT_SETTINGS)
+@click.group(context_settings=CONTEXT_SETTINGS)
 @click.option("--ssid", help="WiFi network name.")
 @click.option("--security", type=click.Choice(["WEP", "WPA", ""]))
 @click.option("--password", help="WiFi password.")
@@ -41,4 +41,4 @@ def cli(*args, **kwargs):
 
 
 if __name__ == "__main__":
-    cli()
+    cli(prog_name='qrwifi')
