@@ -1,9 +1,7 @@
-import re
-import os
+from weather import current_weather
 import click
-import requests
-
-SAMPLE_API_KEY = 'b1b15e88fa797225412429c1c50c122a1'
+import os
+import re
 
 
 class ApiKey(click.ParamType):
@@ -20,19 +18,6 @@ class ApiKey(click.ParamType):
             )
 
         return value
-
-
-def current_weather(location, api_key=SAMPLE_API_KEY):
-    url = 'https://api.openweathermap.org/data/2.5/weather'
-
-    query_params = {
-        'q': location,
-        'appid': api_key,
-    }
-
-    response = requests.get(url, params=query_params)
-
-    return response.json()['weather'][0]['description']
 
 
 @click.group()
