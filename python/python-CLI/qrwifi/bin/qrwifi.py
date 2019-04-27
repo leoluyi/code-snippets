@@ -26,8 +26,7 @@ if __name__ == '__main__':
                 'terminal']
 
         sys.argv.extend(argv)
-        print('sys.argv:')
-        print(sys.argv)
+        print(f'sys.argv:\n{repr(sys.argv)}')
         sys.exit(cli())
     else:
         sys.exit(cli())

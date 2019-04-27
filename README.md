@@ -1,3 +1,3 @@
-# github_misc - code snippets
+# Code Snippets
 
 
