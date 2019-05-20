@@ -8,6 +8,7 @@ python-dotenv = "*"
 flask = "*"
 flask-pymongo = "*"
 flask-bootstrap = "*"
+Jinja2 = ">=2.10.1"
 
 [dev-packages]
 
