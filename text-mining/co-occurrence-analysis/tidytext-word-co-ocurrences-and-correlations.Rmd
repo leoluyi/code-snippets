@@ -1,12 +1,17 @@
-# https://www.tidytextmining.com/nasa.html#word-co-ocurrences-and-correlations
+# Word co-ocurrence and correlations
 
+https://www.tidytextmining.com/nasa.html#word-co-ocurrences-and-correlations
+
+```
 library(dplyr)
 library(tidytext)
 library(widyr)
 library(jsonlite)
+```
 
-# Load data ---------------------------------------------------------------
+## Load data
 
+```{r}
 metadata <- jsonlite::fromJSON("https://data.nasa.gov/data.json")
 names(metadata$dataset)
 
@@ -19,11 +24,12 @@ nasa_desc <- data_frame(id = metadata$dataset$`_id`$`$oid`,
 nasa_keyword <- data_frame(id = metadata$dataset$`_id`$`$oid`, 
                            keyword = metadata$dataset$keyword) %>% 
   unnest(keyword)
+```
 
 
+## Networks of Description and Title Words
 
-# Networks of Description and Title Words ---------------------------------
-
+```{r}
 title_word_pairs <- nasa_title %>% 
   pairwise_count(word, id, sort = TRUE, upper = FALSE)
 
@@ -35,6 +41,4 @@ title_word_pairs <- nasa_title %>%
 ##  3 airs   aqua     641.
 ##  4 level  aqua     623.
 ##  5 global     resolution 8139.
-
-
-
+```
