@@ -1,14 +1,20 @@
 '''Asyncio - demo
 
-https://www.youtube.com/watch?v=BI0asZuqFXM
-https://www.youtube.com/watch?v=3mb9jFAHRfw
-https://www.youtube.com/watch?v=tSLDcRkgTsY
-https://xinhuang.github.io/posts/2017-07-31-common-mistakes-using-python3-asyncio.html
+- https://pythonprogramming.net/asyncio-basics-intermediate-python-tutorial/
+- [Asyncio - Asynchronous programming with coroutines](https://www.youtube.com/watch?v=BI0asZuqFXM)
+- [Gregory Saunders - A Really Gentle Introduction to Asyncio](https://www.youtube.com/watch?v=3mb9jFAHRfw)
+- [Miguel Grinberg - Asynchronous Python for the Complete Beginner](https://www.youtube.com/watch?v=iG6fr81xHKA&feature=youtu.be&t=4m29s)
+- [Python tricks: Demystifying async, await, and asyncio](https://www.youtube.com/watch?v=tSLDcRkgTsY)
+- [Common Mistakes Using Python3 asyncio](https://xinhuang.github.io/posts/2017-07-31-common-mistakes-using-python3-asyncio.html)
 '''
 import asyncio
 
 
 async def find_divisibles(inrange, div_by):
+    """A time-comsuming job
+
+    [description]
+    """
     print(f'Finding nums in range {inrange} divisible by {div_by} ...')
 
     located = []
@@ -40,8 +46,19 @@ if __name__ == '__main__':
         loop = asyncio.get_event_loop()
         loop.set_debug(True)
         d1, d2, d3 = loop.run_until_complete(main())
+
+        # d1, d2, d3 = asyncio.run(main())  # Python 3.7+
+        '''asyncio Face Lift
+
+        https://realpython.com/python37-new-features/#asyncio-face-lift
+
+        Using asyncio.run(), you do not need to explicitly create the event loop.
+        '''
+
         print(d1.result()[:5])
     except Exception as e:
         raise e
     finally:
+        # You always want to close the loop.
         loop.close()
+        pass
