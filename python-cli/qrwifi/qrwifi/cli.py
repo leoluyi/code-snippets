@@ -22,7 +22,7 @@ def cli_entry_point(ctx, ssid: str, security: str = "", password: str = ""):
     '''
 
     # ensure that ctx.obj exists and is a dict
-    # (in case `cli()` is called by means other than the `qrwifi()` function below)
+    # (in case `cli_entry_point()` is called by means other than the `cli()` function below)
     # http://click.palletsprojects.com/en/7.x/commands/#nested-handling-and-contexts
     ctx.ensure_object(dict)
 
