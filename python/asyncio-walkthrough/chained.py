@@ -1,4 +1,4 @@
-#!/usr/env/bin python3
+#!/usr/bin/env python3
 # chained.py
 
 import asyncio
@@ -31,7 +31,7 @@ async def part2(n: int, arg: str) -> str:
 async def chain(n: int) -> None:
     start = time.perf_counter()
     p1 = await part1(n)
-    p2 = await part2(n, p1)
+    p2 = await part2(n, p1)  # chain the result from p1
     end = time.perf_counter() - start
     print(f"-->Chained result{n} => {p2} (took {end:0.2f} seconds).")
 
