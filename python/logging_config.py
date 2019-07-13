@@ -1,14 +1,14 @@
 __ALL__ = ['get_console_handler', 'LogFileHandler']
 
 import logging
-import logging.handlers
+from logging.handlers import TimedRotatingFileHandler
 import sys
 from pathlib import Path
 
 LOG_FORMATTER = logging.Formatter('[%(asctime)s][%(levelname)s] %(message)s')
 
 
-class LogFileHandler(logging.handlers.TimedRotatingFileHandler):
+class LogFileHandler(TimedRotatingFileHandler):
     """docstring for LogFile"""
 
     def __init__(
