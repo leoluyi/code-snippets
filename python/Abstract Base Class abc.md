@@ -29,7 +29,7 @@ class AbstractFoo(metaclass=ABCMeta):
 
 class Foo(AbstractFoo):
 
-    required_attr = 999  # must implement class attribute here for abc in base class
+    required_attr = 999  # must implement attribute here for abc in base class
 
     def __init__(self, value=None):
         if value:
@@ -60,4 +60,27 @@ if __name__ == '__main__':
     main()
 ```
 
+Different types of methods:
 
+```python
+    @abstractmethod
+    def my_abstract_method(self, ...):
+        ...
+    @classmethod
+    @abstractmethod
+    def my_abstract_classmethod(cls, ...):
+        ...
+    @staticmethod
+    @abstractmethod
+    def my_abstract_staticmethod(...):
+        ...
+
+    @property
+    @abstractmethod
+    def my_abstract_property(self):
+        ...
+    @my_abstract_property.setter
+    @abstractmethod
+    def my_abstract_property(self, val):
+        ...
+```
