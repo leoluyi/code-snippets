@@ -1,5 +1,6 @@
 # Python - Abstract Base Class abc.md
 
+- https://docs.python.org/3/library/abc.html
 - https://dbader.org/blog/abstract-base-classes-in-python
 - https://blog.louie.lu/2017/07/28/%E4%BD%A0%E6%89%80%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84-python-%E6%A8%99%E6%BA%96%E5%87%BD%E5%BC%8F%E5%BA%AB%E7%94%A8%E6%B3%95-03-abc/
 
@@ -10,10 +11,15 @@
 - forgetting to implement interface methods in one of the subclasses raises an error as early as possible.
 
 ```py
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta, ABC, abstractmethod
 
 
-class AbstractFoo(metaclass=ABCMeta):
+class MyABC(metaclass=ABCMeta):
+    pass
+
+
+# More convenient way:
+class AbstractFoo(ABC):
 
     # Reruired attr or property
     @property
@@ -29,7 +35,7 @@ class AbstractFoo(metaclass=ABCMeta):
 
 class Foo(AbstractFoo):
 
-    required_attr = 999  # must implement attribute here for abc in base class
+    required_attr = 999  # must implement attribute or property here
 
     def __init__(self, value=None):
         if value:
@@ -63,6 +69,9 @@ if __name__ == '__main__':
 Different types of methods:
 
 ```python
+from abc import ABC
+
+class C(ABC):
     @abstractmethod
     def my_abstract_method(self, ...):
         ...
