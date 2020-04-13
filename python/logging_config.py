@@ -49,10 +49,10 @@ class LogFileHandler(TimedRotatingFileHandler):
         self.setFormatter(LOG_FORMATTER)
 
 
-def get_console_handler():
-    console_handler = logging.StreamHandler(sys.stdout)
-    console_handler.setFormatter(LOG_FORMATTER)
-    return console_handler
+class ConsoleHandler():
+    def __init__(self, stream=os.stdout):
+        super().__init__(stream)
+        self.setFormatter(LOG_FORMATTER)
 
 
 def get_logger_console_file(logger_name, log_file):
@@ -60,7 +60,7 @@ def get_logger_console_file(logger_name, log_file):
 
     logger.setLevel(logging.DEBUG)  # better to have too much log than not enough
 
-    logger.addHandler(get_console_handler())
+    logger.addHandler(ConsoleHandler())
     logger.addHandler(LogFileHandler(log_file))
 
     # with this pattern, it's rarely necessary to propagate the error up to parent
@@ -75,7 +75,7 @@ if __name__ == '__main__':
     default_logger = logging.getLogger(__name__)
     default_logger.setLevel(logging.DEBUG)  # better to have too much log than not enough
 
-    default_logger.addHandler(get_console_handler())
+    default_logger.addHandler(ConsoleHandler())
     default_logger.addHandler(LogFileHandler(LOG_FILE))
 
     # with this pattern, it's rarely necessary to propagate the error up to parent
