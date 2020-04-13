@@ -1,4 +1,4 @@
-__ALL__ = ['get_console_handler', 'LogFileHandler']
+__ALL__ = ['ConsoleHandler', 'LogFileHandler', 'get_logger_console_file']
 
 import logging
 from logging.handlers import TimedRotatingFileHandler
