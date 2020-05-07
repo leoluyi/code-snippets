@@ -1,6 +1,7 @@
 __ALL__ = ['ConsoleHandler', 'LogFileHandler', 'get_logger_console_file']
 
 import logging
+from logging import StreamHandler
 from logging.handlers import TimedRotatingFileHandler
 import sys
 from pathlib import Path
@@ -49,8 +50,8 @@ class LogFileHandler(TimedRotatingFileHandler):
         self.setFormatter(LOG_FORMATTER)
 
 
-class ConsoleHandler():
-    def __init__(self, stream=os.stdout):
+class ConsoleHandler(StreamHandler):
+    def __init__(self, stream=sys.stdout):
         super().__init__(stream)
         self.setFormatter(LOG_FORMATTER)
 
