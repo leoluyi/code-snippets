@@ -11,3 +11,8 @@ $ pipenv --python 3.7
 $ pipenv shell
 $ pip install --upgrade pip aiohttp aiofiles  # Optional: aiodns
 ```
+
+## Generators vs Coroutines
+
+- Both can be startd, paused, and restarted.
+- Generators produce values, Coroutines consume values.

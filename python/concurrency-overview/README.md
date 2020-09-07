@@ -4,6 +4,8 @@ Corresponding code to the Real Python tutorial, "[Speed up your Python Program w
 
 To run the code here, use:
 
-    pip install -r requirements.txt
+```bash
+pipenv install -r requirements.txt
+```
 
 This will ensure you have the required packages.
