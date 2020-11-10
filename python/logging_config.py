@@ -73,7 +73,7 @@ if __name__ == '__main__':
     LOG_FILE = 'log/my_app.log'
 
     default_logger = logging.getLogger(__name__)
-    register_console_file_handler(default_logger)
+    register_console_file_handler(default_logger, LOG_FILE)
 
     # with this pattern, it's rarely necessary to propagate the error up to parent
     default_logger.propagate = False
