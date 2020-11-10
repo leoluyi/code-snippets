@@ -56,10 +56,9 @@ class ConsoleHandler(StreamHandler):
         self.setFormatter(LOG_FORMATTER)
 
 
-def get_logger_console_file(logger_name, log_file):
-    logger = logging.getLogger(logger_name)
+def register_console_file_handler(logger, log_file, level=logging.DEBUG):
 
-    logger.setLevel(logging.DEBUG)  # better to have too much log than not enough
+    logger.setLevel(level)  # better to have too much log than not enough
 
     logger.addHandler(ConsoleHandler())
     logger.addHandler(LogFileHandler(log_file))
@@ -67,17 +66,14 @@ def get_logger_console_file(logger_name, log_file):
     # with this pattern, it's rarely necessary to propagate the error up to parent
     logger.propagate = False
 
-    return logger
+    return None
 
 
 if __name__ == '__main__':
     LOG_FILE = 'log/my_app.log'
 
     default_logger = logging.getLogger(__name__)
-    default_logger.setLevel(logging.DEBUG)  # better to have too much log than not enough
-
-    default_logger.addHandler(ConsoleHandler())
-    default_logger.addHandler(LogFileHandler(LOG_FILE))
+    register_console_file_handler(default_logger)
 
     # with this pattern, it's rarely necessary to propagate the error up to parent
     default_logger.propagate = False
