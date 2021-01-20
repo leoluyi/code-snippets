@@ -1,6 +1,6 @@
 [submodule "R/shiny/markets_shiny"]
 	path = R/shiny/markets_shiny
-	url = git@github.com:leoluyi/markets_shiny.git
+	url = http://github.com/leoluyi/markets_shiny.git
 [submodule "python-flask/flask-restful-api-template"]
 	path = python-flask/flask-restful-api-template
-	url = git@github.com:leoluyi/flask-restful-api-template.git
+	url = http://github.com/leoluyi/flask-restful-api-template.git
