@@ -3,7 +3,9 @@
 
 FROM python:3.7-slim as base
 
-# Setup env
+# Setup env.
+# Set environment variables that set the locale correctly, stop Python from
+# generating .pyc files, and enable Python tracebacks on segfaults.
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -24,18 +26,20 @@ RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy
 
 FROM base AS runtime
 
-# Copy virtual env from python-deps stage
+# Copy virtual env from python-deps stage.
 COPY --from=python-deps /.venv /.venv
 ENV PATH="/.venv/bin:$PATH"
 
-# Create and switch to a new user
+# Create and switch to a new user.
+# Running as the root user is a security risk, so we create a new user and use
+# their home directory as the working directory:
 RUN useradd --create-home appuser
 WORKDIR /home/appuser
 USER appuser
 
-# Install application into container
+# Install application into container.
 COPY . .
 
-# Run the application
+# Run the application.
 ENTRYPOINT ["python", "-m", "http.server"]
 CMD ["--directory", "directory", "8000"]
