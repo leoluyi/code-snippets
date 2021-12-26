@@ -10,3 +10,7 @@ command -v fd >/dev/null && \
 command -v fd >/dev/null && \
   fd -HI '^\s+' | sed -E 's#((.+?/)\s+(.+))#"\1" "\2\3"#' | \
   xargs -n 2 mv
+
+command -v fd >/dev/null && \
+  fd -HI '[!?<>:|]' | tee sed -E 's#([!?<>:|])##g' | \
+  xargs -n 2 mv
