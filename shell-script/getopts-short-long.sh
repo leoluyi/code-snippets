@@ -5,17 +5,21 @@
 function _usage()
 {
   cat >&2 <<EOF
-$*
-Usage: $0 <[options]>
+Usage:
+  $0 <[options]>
 
 Options:
-  -b --bar          Set bar to argument
   -f --foo          Set foo to argument
+  -b --bar-bar      Set bar to argument
   -o --option       Get option to yes
   -h --help         Show this message
+
+>>>>>>>> $*
 EOF
   exit 2
 }
+
+[ $# = 0 ] && _usage "No options given."
 
 optspec=":f:b:ohv-:"
 while getopts "$optspec" optchar; do
@@ -33,12 +37,12 @@ while getopts "$optspec" optchar; do
           { [ -z "$val" ] || [[ "$val" = -* ]] ; } && _usage "Option -$OPTARG requires an argument."
           echo "Parsing option: '--${opt}', value: '${val}'" >&2
           ;;
-        bar)
+        bar-bar)
           val="${!OPTIND}"; OPTIND=$(( OPTIND + 1 ))
           { [ -z "$val" ] || [[ "$val" = -* ]] ; } && _usage "Option -$OPTARG requires an argument."
           echo "Parsing option: '--${OPTARG}', value: '${val}'" >&2
           ;;
-        bar=*)
+        bar-bar=*)
           val=${OPTARG#*=}
           opt=${OPTARG%="$val"}
           { [ -z "$val" ] || [[ "$val" = -* ]] ; } && _usage "Option -$OPTARG requires an argument."
@@ -48,8 +52,8 @@ while getopts "$optspec" optchar; do
           echo "Parsing option: '--${OPTARG}'" >&2
           ;;
         *)
-          if [ "$OPTERR" = 1 ] && [ "${optspec:0:1}" != ":" ]; then
-            _usage ">>>>>>>> Invalid option (--${OPTARG})"
+          if [ "$OPTERR" = 1 ] && [ "${optspec:0:1}" = ":" ]; then
+            _usage "Invalid option (--${OPTARG})"
           fi
           ;;
       esac;;
@@ -69,7 +73,7 @@ while getopts "$optspec" optchar; do
     :) _usage "Option -$OPTARG requires an argument." ;;
     ?)
       if [ "$OPTERR" != 1 ] || [ "${optspec:0:1}" = ":" ]; then
-        _usage ">>>>>>>> Invalid option (-${OPTARG})"
+        _usage "Invalid option (-${OPTARG})"
       fi
       ;;
   esac
