@@ -11,5 +11,6 @@ There are three implementations that may be considered:
 
 ## References
 
+- [Small getopts tutorial [Bash Hackers Wiki]](https://wiki.bash-hackers.org/howto/getopts_tutorial)
 - [bash - Using getopts to process long and short command line options - Stack Overflow](https://stackoverflow.com/a/402410/3744499)
 - [shell - parse - getopt long example - Code Examples](https://code-examples.net/en/q/623c9)
