@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 # < https://stackoverflow.com/a/7680682/3744499 >
 # < https://stackoverflow.com/a/46793269/3744499 >
+set -Eeuo pipefail
 
 function _usage()
 {
   cat >&2 <<EOF
+>>>>>>>> $*
 Usage:
   $0 <[options]>
 
@@ -13,8 +15,6 @@ Options:
   -b --bar-bar      Set bar to argument
   -o --option       Get option to yes
   -h --help         Show this message
-
->>>>>>>> $*
 EOF
   exit 2
 }
@@ -49,6 +49,8 @@ while getopts "$optspec" optchar; do
           echo "Parsing option: '--${opt}', value: '${val}'" >&2
           ;;
         option)
+          val="${!OPTIND}"
+          { [ -n "$val" ] && [[ "$val" != -* ]] ; } && _usage "Option (--$OPTARG) does not suppot an argument."
           echo "Parsing option: '--${OPTARG}'" >&2
           ;;
         *)
@@ -85,3 +87,30 @@ if [ -n "$*" ]; then
   echo "Positional arguments:"
   echo "$*"
 fi
+
+trap 'cleanup $? $LINENO $0' EXIT ERR
+cleanup() {
+  local rv=$1
+  local lineno=$2
+  local script=$3
+
+  # housekeeping: temp files
+  [ -d "${TMP_DIR}" ] && rm -rf "${TMP_DIR}" || true
+  echo "(Exit) temp file removed."
+
+  if [ "$rv" != "0" ] && [ "$lineno" != 1 ]; then
+    # error handling
+    >&2 echo "$(logger "ERROR" "$script") (Traceback) status_code $rv occurred on $lineno in $script"
+    exit "$rv"
+  fi
+}
+
+logger() {
+  local level="$1"
+  local prefix="$2"
+  if [ -n "$prefix" ]; then
+    echo "$(date +%Y-%m-%dT%H:%M:%S) [$level] ($prefix)"
+  else
+    echo "$(date +%Y-%m-%dT%H:%M:%S) [$level]"
+  fi
+}
