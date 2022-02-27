@@ -2,13 +2,15 @@
 # < https://stackoverflow.com/a/7680682/3744499 >
 # < https://stackoverflow.com/a/46793269/3744499 >
 set -Eeuo pipefail
+_filename=$(basename -- "$0")
+_script="${_filename%.*}"
 
 function _usage()
 {
   cat >&2 <<EOF
 >>>>>>>> $*
 Usage:
-  $0 <[options]>
+  _filename <[options]>
 
 Options:
   -f --foo          Set foo to argument
@@ -21,6 +23,17 @@ EOF
 
 [ $# = 0 ] && _usage "No options given."
 
+need_arg() {
+  if [ -z "$2" ] || [[ "$2" = -* ]]; then
+    _usage "Option ($1) requires an argument."
+  fi
+}
+no_need_arg() {
+  if [ -n "$2" ] && [[ "$2" != -* ]]; then
+    _usage "Option ($1) does not suppot an argument."
+  fi
+}
+
 optspec=":f:b:ohv-:"
 while getopts "$optspec" optchar; do
   case "${optchar}" in
@@ -28,29 +41,29 @@ while getopts "$optspec" optchar; do
       case "${OPTARG}" in
         foo)
           val="${!OPTIND}"; OPTIND=$(( OPTIND + 1 ))
-          { [ -z "$val" ] || [[ "$val" = -* ]] ; } && _usage "Option -$OPTARG requires an argument."
+          need_arg "--$OPTARG" "$val"
           echo "Parsing option: '--${OPTARG}', value: '${val}'" >&2
           ;;
         foo=*)
           val=${OPTARG#*=}
           opt=${OPTARG%="$val"}
-          { [ -z "$val" ] || [[ "$val" = -* ]] ; } && _usage "Option -$OPTARG requires an argument."
+          need_arg "--$OPTARG" "$val"
           echo "Parsing option: '--${opt}', value: '${val}'" >&2
           ;;
         bar-bar)
           val="${!OPTIND}"; OPTIND=$(( OPTIND + 1 ))
-          { [ -z "$val" ] || [[ "$val" = -* ]] ; } && _usage "Option -$OPTARG requires an argument."
+          need_arg "--$OPTARG" "$val"
           echo "Parsing option: '--${OPTARG}', value: '${val}'" >&2
           ;;
         bar-bar=*)
           val=${OPTARG#*=}
           opt=${OPTARG%="$val"}
-          { [ -z "$val" ] || [[ "$val" = -* ]] ; } && _usage "Option -$OPTARG requires an argument."
+          need_arg "--$OPTARG" "$val"
           echo "Parsing option: '--${opt}', value: '${val}'" >&2
           ;;
         option)
           val="${!OPTIND}"
-          { [ -n "$val" ] && [[ "$val" != -* ]] ; } && _usage "Option (--$OPTARG) does not suppot an argument."
+          no_need_arg "--$OPTARG" "$val"
           echo "Parsing option: '--${OPTARG}'" >&2
           ;;
         *)
@@ -59,18 +72,10 @@ while getopts "$optspec" optchar; do
           fi
           ;;
       esac;;
-    f)
-      echo "Parsing option: '-${optchar}', value: '${OPTARG}'" >&2
-      ;;
-    b)
-      echo "Parsing option: '-${optchar}', value: '${OPTARG}'" >&2
-      ;;
-    o)
-      echo "Parsing option: '-${optchar}'" >&2
-      ;;
-    v)
-      echo "Parsing option: '-${optchar}'" >&2
-      ;;
+    f) echo "Parsing option: '-${optchar}', value: '${OPTARG}'" >&2 ;;
+    b) echo "Parsing option: '-${optchar}', value: '${OPTARG}'" >&2 ;;
+    o) echo "Parsing option: '-${optchar}'" >&2 ;;
+    v) echo "Parsing option: '-${optchar}'" >&2 ;;
     h) _usage ;;
     :) _usage "Option -$OPTARG requires an argument." ;;
     ?)
@@ -107,10 +112,28 @@ cleanup() {
 
 logger() {
   local level="$1"
-  local prefix="$2"
-  if [ -n "$prefix" ]; then
-    echo "$(date +%Y-%m-%dT%H:%M:%S) [$level] ($prefix)"
+  local prefix
+  local message
+
+  case "$level" in
+    E*|e*) level=ERROR ;;
+    W*|w*) level=WARN ;;
+    I*|i*) level=INFO ;;
+    D*|d*) level=DEBUG ;;
+    *) level=INFO ;;
+  esac
+
+  if [ $# -gt 2 ]; then
+    prefix=$2
+    message="${*:3}"
   else
-    echo "$(date +%Y-%m-%dT%H:%M:%S) [$level]"
+    prefix=""
+    message="${*:2}"
+  fi
+
+  if [ -n "$prefix" ]; then
+    echo "$(date +%Y-%m-%dT%H:%M:%S) [$level] ($prefix)" "$message"
+  else
+    echo "$(date +%Y-%m-%dT%H:%M:%S) [$level]" "$message"
   fi
 }
