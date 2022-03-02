@@ -3,6 +3,7 @@
 # < https://stackoverflow.com/a/23357277 >
 # < https://stackoverflow.com/a/30988704/3744499 >
 # < https://www.computerhope.com/unix/bash/read.htm >
+# < https://www.baeldung.com/linux/read-command >
 
 # for 4.4-alpha or later
 # ------------------------
