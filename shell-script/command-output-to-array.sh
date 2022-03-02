@@ -19,11 +19,13 @@ readarray -d '' array < <(find . -name "pattern" -print0)
 array=()
 while IFS= read -r line; do array+=("$line"); done < <(mycommand)
 while IFS= read -r line; do echo ">>$line<<"; done < file.txt
-# To preserve white space at the beginning or the end of a line, it's common to
-# specify IFS= (with no value). Default -d param for `read` is $'\n'
+#> To preserve white space at the beginning or the end of a line, it's common to
+#  specify IFS= (with no value) to prevent from field splitting.
+#> Default -d param for `read` is $'\n'. Use '' ($'\0') to define
+#  null-separated lines for loop.
 
 # e.g. creating an array from find result:
-while IFS=  read -r -d $'\0' line; do
+while IFS=  read -r -d '' line; do
   array+=("$line")
 done < <(find . -name "pattern" -print0)
 
