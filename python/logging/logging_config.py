@@ -1,20 +1,16 @@
-__ALL__ = ['ConsoleHandler', 'LogFileHandler', 'get_logger_console_file']
+__ALL__ = ["ConsoleHandler", "LogFileHandler", "get_logger_console_file"]
 
 import logging
-from logging import StreamHandler
-from logging.handlers import TimedRotatingFileHandler
 import sys
 from pathlib import Path
 
-LOG_FORMATTER = logging.Formatter('[%(asctime)s][%(levelname)s] %(message)s')
+LOG_FORMATTER = logging.Formatter("[%(asctime)s][%(levelname)s] %(message)s")
 
 
-class LogFileHandler(TimedRotatingFileHandler):
-    """docstring for LogFile"""
-
+class LogFileHandler(logging.handlers.TimedRotatingFileHandler):
     def __init__(
-            self, log_file, when='midnight', interval=1,
-            backupCount=30, atTime=None):
+        self, log_file, when="midnight", interval=1, backupCount=30, atTime=None
+    ):
         """
         Arguments:
             log_file {[type]} -- File path for logging output.
@@ -43,24 +39,50 @@ class LogFileHandler(TimedRotatingFileHandler):
 
         super().__init__(
             log_file,
-            when=when, interval=interval, backupCount=backupCount, encoding='utf-8',
-            atTime=atTime
+            when=when,
+            interval=interval,
+            backupCount=backupCount,
+            encoding="utf-8",
+            atTime=atTime,
         )
 
         self.setFormatter(LOG_FORMATTER)
 
 
-class ConsoleHandler(StreamHandler):
+class LessThanFilter(logging.Filter):
+    """
+    Log higher level to stderr.
+    https://stackoverflow.com/a/31459386/3744499
+    """
+
+    def __init__(self, exclusive_maximum, name=""):
+        super(LessThanFilter, self).__init__(name)
+        self.max_level = exclusive_maximum
+
+    def filter(self, record):
+        # non-zero return means we log this message
+        return 1 if record.levelno < self.max_level else 0
+
+
+class ConsoleHandler(logging.StreamHandler):
     def __init__(self, stream=sys.stdout):
         super().__init__(stream)
         self.setFormatter(LOG_FORMATTER)
 
 
 def register_console_file_handler(logger, log_file, level=logging.DEBUG):
-
     logger.setLevel(level)  # better to have too much log than not enough
 
-    logger.addHandler(ConsoleHandler())
+    logging_handler_out = ConsoleHandler(sys.stdout)
+    logging_handler_out.setLevel(logging.DEBUG)
+    logging_handler_out.addFilter(LessThanFilter(logging.WARNING))
+
+    logging_handler_err = ConsoleHandler(sys.stderr)
+    logging_handler_err.setLevel(logging.WARNING)
+    logger.addHandler(logging_handler_err)
+
+    logger.addHandler(logging_handler_out)
+    logger.addHandler(logging_handler_err)
     logger.addHandler(LogFileHandler(log_file))
 
     # with this pattern, it's rarely necessary to propagate the error up to parent
@@ -69,11 +91,8 @@ def register_console_file_handler(logger, log_file, level=logging.DEBUG):
     return None
 
 
-if __name__ == '__main__':
-    LOG_FILE = 'log/my_app.log'
+if __name__ == "__main__":
+    LOG_FILE = "log/my_app.log"
 
     default_logger = logging.getLogger(__name__)
     register_console_file_handler(default_logger, LOG_FILE)
-
-    # with this pattern, it's rarely necessary to propagate the error up to parent
-    default_logger.propagate = False
