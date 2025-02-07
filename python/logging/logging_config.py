@@ -1,6 +1,7 @@
 __ALL__ = ["ConsoleHandler", "LogFileHandler", "get_logger_console_file"]
 
 import logging
+import logging.handlers
 import sys
 from pathlib import Path
 
@@ -96,3 +97,4 @@ if __name__ == "__main__":
 
     default_logger = logging.getLogger(__name__)
     register_console_file_handler(default_logger, LOG_FILE)
+    default_logger.warning("hihi ---------------")
